@@ -8,32 +8,64 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<User>
- *
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function get(?int $id = null, ?string $email = null, ?int $limit = null, ?int $offset = null): mixed
     {
-        $this->getEntityManager()->persist($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        if ($id !== null) {
+            return $this->findOneById($id);
         }
+        if ($email !== null) {
+            return $this->findOneByEmail($email);
+        }
+        return $this->findPaginated($limit, $offset);
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public function save(User $user): int
     {
-        $this->getEntityManager()->remove($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
+        return $user->getId();
+    }
+
+    public function remove(User $user): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($user);
+        $em->flush();
+    }
+
+    private function findOneById(int $id): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    private function findOneByEmail(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    private function findPaginated(?int $limit, ?int $offset): array
+    {
+        return $this->createQueryBuilder('u')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult($offset ?? 0)
+            ->getResult();
     }
 }

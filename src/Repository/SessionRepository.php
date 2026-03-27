@@ -8,32 +8,55 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Session>
- *
- * @method Session|null find($id, $lockMode = null, $lockVersion = null)
- * @method Session|null findOneBy(array $criteria, array $orderBy = null)
- * @method Session[]    findAll()
- * @method Session[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SessionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
         parent::__construct($registry, Session::class);
     }
 
-    public function save(Session $entity, bool $flush = false): void
+    public function get(?int $id = null, ?string $token = null): mixed
     {
-        $this->getEntityManager()->persist($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        if ($id !== null) {
+            return $this->findOneById($id);
         }
+        if ($token !== null) {
+            return $this->findOneByToken($token);
+        }
+        return null;
     }
 
-    public function remove(Session $entity, bool $flush = false): void
+    public function save(Session $session): int
     {
-        $this->getEntityManager()->remove($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $em = $this->getEntityManager();
+        $em->persist($session);
+        $em->flush();
+        return $session->getId();
+    }
+
+    public function remove(Session $session): void
+    {
+        $em = $this->getEntityManager();
+        $em->remove($session);
+        $em->flush();
+    }
+
+    private function findOneById(int $id): ?Session
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    private function findOneByToken(string $token): ?Session
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.token = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

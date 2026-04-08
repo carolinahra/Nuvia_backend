@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Exception\Session\SessionNotFoundException;
 use App\Service\SessionService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,13 +33,11 @@ class AuthSubscriber implements EventSubscriberInterface
         $authHeader = $request->headers->get('Authorization', '');
         $token = str_starts_with($authHeader, 'Bearer ') ? substr($authHeader, 7) : null;
 
-        $session = $token ? $this->sessionService->findByToken($token) : null;
-
-        if (!$session) {
+        try {
+            $session = $token ? $this->sessionService->findOne(token: $token) : throw new SessionNotFoundException();
+            $request->attributes->set('_user', $session->getUser());
+        } catch (SessionNotFoundException) {
             $event->setResponse(new JsonResponse(['error' => 'Unauthorized'], 401));
-            return;
         }
-
-        $request->attributes->set('_user', $session->getUser());
     }
 }

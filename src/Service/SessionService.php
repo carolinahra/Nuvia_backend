@@ -37,4 +37,9 @@ class SessionService
         }
         return $session;
     }
+
+    public function findByToken(string $token): ?Session
+    {
+        return $this->repository->get(token: $token);
+    }
 }

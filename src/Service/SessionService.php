@@ -16,7 +16,7 @@ class SessionService
     public function createSession(User $user): Session
     {
         $token = bin2hex(random_bytes(32));
-        $now   = new \DateTimeImmutable();
+        $now   = new \DateTime();
 
         $session = new Session();
         $session->setUser($user)

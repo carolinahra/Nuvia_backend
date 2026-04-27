@@ -30,8 +30,13 @@ class UserService
     {
         $user = new User();
 
-        $user->setName($data['name'] ?? null);
-        $user->setUserName($data['user_name'] ?? null);
+        if (empty($data['name'])) {
+            throw new \InvalidArgumentException('Name required');
+        }
+
+        if (empty($data['username'])) {
+            throw new \InvalidArgumentException('Username required');
+        }
 
         if (empty($data['email'])) {
             throw new \InvalidArgumentException('Email required');
@@ -41,20 +46,38 @@ class UserService
             throw new \InvalidArgumentException('Password required');
         }
 
-        if (!empty($data['birth_date'])) {
-            try {
-                $user->setBirthdate(new \DateTime($data['birth_date']));
-            } catch (\Exception $e) {
-                throw new \InvalidArgumentException('Invalid birth date');
-            };
-        }
+        $user->setName($data['name']);
+        $user->setUsername($data['username']);
         $user->setEmail($data['email']);
-
         $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
-        $user->setHeightCm(isset($data['height_cm']) ? (int)$data['height_cm'] : null);
+        $user->setHeightCm(isset($data['heightCm']) ? (int)$data['heightCm'] : null);
         $user->setSex($data['sex'] ?? null);
-        $user->setActivityLevel($data['activity_level'] ?? null);
-        $user->setGoal($data['goal'] ?? null);
+        $user->setActivityLevel($data['activityLevel'] ?? null);
+
+        if (!empty($data['birthdate'])) {
+            try {
+                $user->setBirthdate(new \DateTime($data['birthdate']));
+            } catch (\Exception) {
+                throw new \InvalidArgumentException('Invalid birthdate');
+            }
+        }
+
+        $currentWeight = isset($data['currentWeightKg']) ? (float)$data['currentWeightKg'] : null;
+        $targetWeight  = isset($data['targetWeightKg']) ? (float)$data['targetWeightKg'] : null;
+
+        if ($currentWeight !== null && $targetWeight !== null) {
+            if ($currentWeight > $targetWeight) {
+                $goal = 'lose';
+            } elseif ($currentWeight < $targetWeight) {
+                $goal = 'gain';
+            } else {
+                $goal = 'maintain';
+            }
+        } else {
+            $goal = null;
+        }
+
+        $user->setGoal($goal);
         $user->setIsAdmin(isset($data['is_admin']) ? (bool)$data['is_admin'] : false);
         $this->repository->save($user);
 

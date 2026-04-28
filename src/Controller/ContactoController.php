@@ -1,41 +1,58 @@
 <?php
-// Nuvia_backend-main/src/Controller/ContactoController.php
 
 namespace App\Controller;
 
+use App\Service\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ContactoController extends AbstractController
 {
+    public function __construct(
+        private readonly EmailService $emailService,
+    ) {}
+
     #[Route('/contacto', name: 'procesar_contacto', methods: ['POST'])]
-    public function procesar(Request $request): Response
+    public function procesar(Request $request): JsonResponse
     {
-        $nombre = $request->request->get('nombre');
-        $email = $request->request->get('email');
-        $mensaje = $request->request->get('mensaje');
+        $data    = json_decode($request->getContent(), true);
+        $name  = $data['name'] ?? '';
+        $email   = $data['email'] ?? '';
+        $subject = $data['subject'] ?? '';
+        $message = $data['message'] ?? '';
 
         $errores = [];
 
-        // Validación en el servidor (PHP)
-        if (empty($nombre)) {
-            $errores[] = "El nombre es obligatorio.";
+        if (empty($name)) {
+            $errores[] = 'El nombre es obligatorio.';
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errores[] = "El correo no es válido.";
+            $errores[] = 'El correo no es válido.';
         }
-        if (empty($mensaje)) {
-            $errores[] = "El mensaje es obligatorio.";
+        if (empty($message)) {
+            $errores[] = 'El mensaje es obligatorio.';
         }
-
-        if (count($errores) > 0) {
-            // Si hay errores, devolver un mensaje (en un proyecto real se devuelve a la vista)
-            return new Response(implode("<br>", $errores), 400);
+        if (empty($subject)) {
+            $errores[] = 'El asunto es obligatorio.';
         }
 
-        // Si todo es correcto, procesar (ej. enviar email o guardar en BD)
-        return new Response("Formulario procesado correctamente. ¡Gracias, $nombre!", 200);
+        if (!empty($errores)) {
+            return $this->json(['errors' => $errores], 400);
+        }
+
+        try {
+            $this->emailService->send(
+                from: $email,
+                to: 'customer.support.nuvia@gmail.com',
+                subject: $subject,
+                message: $message,
+            );
+        } catch (\Throwable) {
+            return $this->json(['error' => 'No se pudo enviar el mensaje.'], 500);
+        }
+
+        return $this->json(['message' => 'Mensaje enviado correctamente.']);
     }
 }

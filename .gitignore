@@ -8,7 +8,6 @@
 /var/
 /vendor/
 /memory/
-/docs/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

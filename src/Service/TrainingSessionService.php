@@ -21,6 +21,11 @@ class TrainingSessionService
         return $this->repository->findAll();
     }
 
+    public function findByUser(int $userId): array
+    {
+        return $this->repository->findByUser($userId);
+    }
+
     public function create(array $data): TrainingSession
     {
         $trainingSession = new TrainingSession();

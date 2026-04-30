@@ -35,7 +35,7 @@ class AuthSubscriber implements EventSubscriberInterface
 
         try {
             $session = $token ? $this->sessionService->findOne(token: $token) : throw new SessionNotFoundException();
-            $request->attributes->set('_user', $session->getUser());
+            $request->attributes->set('user', $session->getUser());
         } catch (SessionNotFoundException) {
             $event->setResponse(new JsonResponse(['error' => 'Unauthorized'], 401));
         }

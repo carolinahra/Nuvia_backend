@@ -36,4 +36,9 @@ class UserWeightLogRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByUser(int $userId): array
+    {
+        return $this->findBy(['user' => $userId], ['createdAt' => 'DESC']);
+    }
 }

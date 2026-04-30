@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\UserService;
+use App\Service\UserWeightLogService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,7 @@ class UserController extends AbstractController
 {
     public function __construct(
         private readonly UserService $userService,
+        private readonly UserWeightLogService $userWeightLogService
     ) {}
 
     #[Route('/users', name: 'register', methods: ['POST'])]
@@ -22,6 +24,10 @@ class UserController extends AbstractController
 
         try {
             $user = $this->userService->create($data);
+            $this->userWeightLogService->create([
+                'user' => $user,
+                'weightKg' => $data['currentWeightKg'] ?? null
+            ]);
             return $this->json(['id' => $user->getId()], 201);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);

@@ -1,0 +1,10 @@
+{
+	frankenphp
+	skip_install_trust_root_ca
+}
+
+:8080 {
+	root * /app/public
+	encode zstd br gzip
+	php_server
+}

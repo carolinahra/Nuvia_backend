@@ -1,6 +1,5 @@
 {
 	frankenphp
-	skip_install_trust_root_ca
 }
 
 :8080 {

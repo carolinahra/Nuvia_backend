@@ -75,10 +75,10 @@ class TrainingSessionController extends AbstractController
 
         try {
             $session = $this->trainingSessionService->create([
-                'training_session_user'               => $user,
-                'training_session_routine'            => $routine,
-                'training_session_duration_minutes'   => $data['durationMinutes'] ?? null,
-                'training_session_calories_estimated' => $data['caloriesEstimated'] ?? null,
+                'user'               => $user,
+                'routine'            => $routine,
+                'durationMinutes'    => $data['durationMinutes'] ?? null,
+                'caloriesEstimated'  => $data['caloriesEstimated'] ?? null,
             ]);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);
@@ -113,15 +113,15 @@ class TrainingSessionController extends AbstractController
             if (!$routine) {
                 return $this->json(['error' => 'Routine not found'], 404);
             }
-            $payload['training_session_routine'] = $routine;
+            $payload['routine'] = $routine;
         }
 
         if (isset($data['durationMinutes'])) {
-            $payload['training_session_duration_minutes'] = $data['durationMinutes'];
+            $payload['durationMinutes'] = $data['durationMinutes'];
         }
 
         if (isset($data['caloriesEstimated'])) {
-            $payload['training_session_calories_estimated'] = $data['caloriesEstimated'];
+            $payload['caloriesEstimated'] = $data['caloriesEstimated'];
         }
 
         $session = $this->trainingSessionService->update($session, $payload);

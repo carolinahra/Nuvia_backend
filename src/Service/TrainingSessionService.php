@@ -30,27 +30,27 @@ class TrainingSessionService
     {
         $trainingSession = new TrainingSession();
 
-        if (empty($data['training_session_user'])) {
+        if (empty($data['user'])) {
             throw new \InvalidArgumentException('User is required');
         }
 
-        if (empty($data['training_session_routine'])) {
+        if (empty($data['routine'])) {
             throw new \InvalidArgumentException('Routine is required');
         }
 
-        if (isset($data['training_session_duration_minutes'])) {
-            $trainingSession->setDurationMinutes($data['training_session_duration_minutes']);
+        if (isset($data['durationMinutes'])) {
+            $trainingSession->setDurationMinutes($data['durationMinutes']);
         }
 
-        if (isset($data['training_session_calories_estimated'])) {
-            $trainingSession->setCaloriesEstimated($data['training_session_calories_estimated']);
+        if (isset($data['caloriesEstimated'])) {
+            $trainingSession->setCaloriesEstimated($data['caloriesEstimated']);
         }
 
-        $trainingSession->setUser($data['training_session_user']);
-        $trainingSession->setRoutine($data['training_session_routine']);
+        $trainingSession->setUser($data['user']);
+        $trainingSession->setRoutine($data['routine']);
 
         $trainingSession->setCreatedAt(
-            $data['training_session_created_at'] ?? new \DateTimeImmutable()
+            $data['createdAt'] ?? new \DateTime()
         );
 
         $this->repository->save($trainingSession, true);
@@ -60,20 +60,20 @@ class TrainingSessionService
 
     public function update(TrainingSession $trainingSession, array $data): TrainingSession
     {
-        if (isset($data['training_session_user'])) {
-            $trainingSession->setUser($data['training_session_user']);
+        if (isset($data['user'])) {
+            $trainingSession->setUser($data['user']);
         }
 
-        if (isset($data['training_session_routine'])) {
-            $trainingSession->setRoutine($data['training_session_routine']);
+        if (isset($data['routine'])) {
+            $trainingSession->setRoutine($data['routine']);
         }
 
-        if (isset($data['training_session_duration_minutes'])) {
-            $trainingSession->setDurationMinutes($data['training_session_duration_minutes']);
+        if (isset($data['durationMinutes'])) {
+            $trainingSession->setDurationMinutes($data['durationMinutes']);
         }
 
-        if (isset($data['training_session_calories_estimated'])) {
-            $trainingSession->setCaloriesEstimated($data['training_session_calories_estimated']);
+        if (isset($data['caloriesEstimated'])) {
+            $trainingSession->setCaloriesEstimated($data['caloriesEstimated']);
         }
 
         $this->repository->save($trainingSession, true);

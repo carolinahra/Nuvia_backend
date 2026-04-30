@@ -65,6 +65,7 @@ class RoutineHasExerciseController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         $rhe  = $this->routineHasExerciseService->update($rhe, $data);
+        
 
         return $this->json([
             'exercise_id'  => $rhe->getExercise()->getId(),

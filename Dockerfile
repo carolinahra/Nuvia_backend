@@ -6,11 +6,13 @@ RUN apt-get update && apt-get install -y unzip git && rm -rf /var/lib/apt/lists/
 
 RUN install-php-extensions pdo_mysql mbstring intl opcache zip
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 WORKDIR /app
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 RUN php bin/console cache:warmup --env=prod
 

@@ -1,5 +1,7 @@
 FROM dunglas/frankenphp:latest-php8.2
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 RUN install-php-extensions pdo_mysql mbstring intl opcache
 
 WORKDIR /app

@@ -17,3 +17,5 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 RUN php bin/console cache:warmup --env=prod
 
 EXPOSE 8080
+
+CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]

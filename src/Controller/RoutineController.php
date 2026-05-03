@@ -20,10 +20,10 @@ class RoutineController extends AbstractController
         $routines = $this->routineService->findMany();
 
         $data = array_map(fn ($r) => [
-            'id'               => $r->getId(),
-            'name'             => $r->getName(),
-            'description'      => $r->getDescription(),
-            'duration_minutes' => $r->getDurationMinutes(),
+            'id'              => $r->getId(),
+            'name'            => $r->getName(),
+            'description'     => $r->getDescription(),
+            'durationMinutes' => $r->getDurationMinutes(),
         ], $routines);
 
         return $this->json($data);
@@ -39,22 +39,22 @@ class RoutineController extends AbstractController
         }
 
         $exercises = array_map(fn ($rhe) => [
-            'exercise_id'  => $rhe->getExercise()->getId(),
-            'name'         => $rhe->getExercise()->getName(),
-            'description'  => $rhe->getExercise()->getDescription(),
-            'intensity'    => $rhe->getExercise()->getIntensity(),
-            'sets'         => $rhe->getSets(),
-            'reps'         => $rhe->getReps(),
-            'rest_seconds' => $rhe->getRestSeconds(),
-            'order_index'  => $rhe->getOrderIndex(),
+            'exerciseId'  => $rhe->getExercise()->getId(),
+            'name'        => $rhe->getExercise()->getName(),
+            'description' => $rhe->getExercise()->getDescription(),
+            'intensity'   => $rhe->getExercise()->getIntensity(),
+            'sets'        => $rhe->getSets(),
+            'reps'        => $rhe->getReps(),
+            'restSeconds' => $rhe->getRestSeconds(),
+            'orderIndex'  => $rhe->getOrderIndex(),
         ], $routine->getRoutineHasExercises()->toArray());
 
         return $this->json([
-            'id'               => $routine->getId(),
-            'name'             => $routine->getName(),
-            'description'      => $routine->getDescription(),
-            'duration_minutes' => $routine->getDurationMinutes(),
-            'exercises'        => $exercises,
+            'id'              => $routine->getId(),
+            'name'            => $routine->getName(),
+            'description'     => $routine->getDescription(),
+            'durationMinutes' => $routine->getDurationMinutes(),
+            'exercises'       => $exercises,
         ]);
     }
 
@@ -76,10 +76,10 @@ class RoutineController extends AbstractController
         }
 
         return $this->json([
-            'id'               => $routine->getId(),
-            'name'             => $routine->getName(),
-            'description'      => $routine->getDescription(),
-            'duration_minutes' => $routine->getDurationMinutes(),
+            'id'              => $routine->getId(),
+            'name'            => $routine->getName(),
+            'description'     => $routine->getDescription(),
+            'durationMinutes' => $routine->getDurationMinutes(),
         ]);
     }
 }

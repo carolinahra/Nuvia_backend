@@ -20,14 +20,14 @@ class RoutineHasExerciseController extends AbstractController
         $entries = $this->routineHasExerciseService->findByRoutine($routineId);
 
         $data = array_map(fn ($rhe) => [
-            'exercise_id'  => $rhe->getExercise()->getId(),
+            'exerciseId'   => $rhe->getExercise()->getId(),
             'name'         => $rhe->getExercise()->getName(),
             'description'  => $rhe->getExercise()->getDescription(),
             'intensity'    => $rhe->getExercise()->getIntensity(),
             'sets'         => $rhe->getSets(),
             'reps'         => $rhe->getReps(),
-            'rest_seconds' => $rhe->getRestSeconds(),
-            'order_index'  => $rhe->getOrderIndex(),
+            'restSeconds'  => $rhe->getRestSeconds(),
+            'orderIndex'   => $rhe->getOrderIndex(),
         ], $entries);
 
         return $this->json($data);
@@ -43,14 +43,14 @@ class RoutineHasExerciseController extends AbstractController
         }
 
         return $this->json([
-            'exercise_id'  => $rhe->getExercise()->getId(),
+            'exerciseId'   => $rhe->getExercise()->getId(),
             'name'         => $rhe->getExercise()->getName(),
             'description'  => $rhe->getExercise()->getDescription(),
             'intensity'    => $rhe->getExercise()->getIntensity(),
             'sets'         => $rhe->getSets(),
             'reps'         => $rhe->getReps(),
-            'rest_seconds' => $rhe->getRestSeconds(),
-            'order_index'  => $rhe->getOrderIndex(),
+            'restSeconds'  => $rhe->getRestSeconds(),
+            'orderIndex'   => $rhe->getOrderIndex(),
         ]);
     }
 
@@ -68,11 +68,11 @@ class RoutineHasExerciseController extends AbstractController
         
 
         return $this->json([
-            'exercise_id'  => $rhe->getExercise()->getId(),
+            'exerciseId'   => $rhe->getExercise()->getId(),
             'sets'         => $rhe->getSets(),
             'reps'         => $rhe->getReps(),
-            'rest_seconds' => $rhe->getRestSeconds(),
-            'order_index'  => $rhe->getOrderIndex(),
+            'restSeconds'  => $rhe->getRestSeconds(),
+            'orderIndex'   => $rhe->getOrderIndex(),
         ]);
     }
 }

@@ -25,8 +25,8 @@ class UserWeightLogController extends AbstractController
 
         $data = array_map(fn ($log) => [
             'id'         => $log->getId(),
-            'weight_kg'  => $log->getWeightKg(),
-            'created_at' => $log->getCreatedAt()->format(\DateTimeInterface::ATOM),
+            'weightKg'   => $log->getWeightKg(),
+            'createdAt'  => $log->getCreatedAt()->format(\DateTimeInterface::ATOM),
         ], $logs);
 
         return $this->json($data);
@@ -42,7 +42,7 @@ class UserWeightLogController extends AbstractController
         try {
             $log = $this->weightLogService->create([
                 'user_weight_log_user'      => $user,
-                'user_weight_log_weight_kg' => $data['weight_kg'] ?? null,
+                'user_weight_log_weight_kg' => $data['weightKg'] ?? null,
             ]);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);
@@ -50,8 +50,8 @@ class UserWeightLogController extends AbstractController
 
         return $this->json([
             'id'         => $log->getId(),
-            'weight_kg'  => $log->getWeightKg(),
-            'created_at' => $log->getCreatedAt()->format(\DateTimeInterface::ATOM),
+            'weightKg'   => $log->getWeightKg(),
+            'createdAt'  => $log->getCreatedAt()->format(\DateTimeInterface::ATOM),
         ], 201);
     }
 }

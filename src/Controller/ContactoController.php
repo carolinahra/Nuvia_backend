@@ -46,8 +46,8 @@ class ContactoController extends AbstractController
             $this->emailService->send(
                 from: $email,
                 to: 'customer.support.nuvia@gmail.com',
-                subject: $subject,
-                message: $message,
+                subject: "[Contacto] $subject",
+                message: "De: $name <$email>\n\n$message",
             );
         } catch (\Throwable) {
             return $this->json(['error' => 'No se pudo enviar el mensaje.'], 500);

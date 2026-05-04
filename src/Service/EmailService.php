@@ -14,7 +14,8 @@ class EmailService
     public function send(string $from, string $to, string $subject, string $message): void
     {
         $email = (new Email())
-            ->from($from)
+            ->from('customer.support.nuvia@gmail.com')
+            ->replyTo($from)
             ->to($to)
             ->subject($subject)
             ->text($message);

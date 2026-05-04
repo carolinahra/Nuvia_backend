@@ -21,6 +21,24 @@ class DietMealService
         return $this->repository->findAll();
     }
 
+    public function getDishesByDietGroupedByMeal(int $dietId): array
+    {
+        $mealTypes = ['desayuno', 'media-mañana', 'comida', 'merienda', 'cena'];
+        $grouped   = array_fill_keys($mealTypes, []);
+
+        foreach ($this->repository->findByDiet($dietId) as $dm) {
+            $dish   = $dm->getDish();
+            $type   = $dm->getMealType();
+            $grouped[$type][] = [
+                'id'       => $dish->getId(),
+                'name'     => $dish->getName(),
+                'calories' => $dish->getCaloriesPerServing(),
+            ];
+        }
+
+        return $grouped;
+    }
+
     public function create(array $data): DietMeal
     {
         $dietMeal = new DietMeal();

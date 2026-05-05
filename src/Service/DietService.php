@@ -16,6 +16,11 @@ class DietService
         return $this->repository->find($id);
     }
 
+    public function findOneByName(string $name): ?Diet
+    {
+        return $this->repository->findOneBy(['name' => $name]);
+    }
+
     public function findMany(): array
     {
         return $this->repository->findAll();

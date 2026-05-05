@@ -36,4 +36,16 @@ class DietMealRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /** @return DietMeal[] */
+    public function findByDiet(int $dietId): array
+    {
+        return $this->createQueryBuilder('dm')
+            ->join('dm.dish', 'di')
+            ->addSelect('di')
+            ->where('dm.diet = :dietId')
+            ->setParameter('dietId', $dietId)
+            ->getQuery()
+            ->getResult();
+    }
 }

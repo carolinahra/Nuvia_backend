@@ -109,7 +109,7 @@ class UserService
         if (!empty($data['birth_date'])) {
             try {
                 $user->setBirthdate(new \DateTime($data['birth_date']));
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 throw new \InvalidArgumentException('Invalid birth_date');
             }
         }
@@ -133,6 +133,12 @@ class UserService
         $this->repository->save($user);
 
         return $user;
+    }
+
+    public function setDefaultDiet(User $user, \App\Entity\Diet $diet): void
+    {
+        $user->setDefaultDiet($diet);
+        $this->repository->save($user);
     }
 
     public function deleteById(int $id):void

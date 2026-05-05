@@ -23,7 +23,7 @@ class DietMealService
 
     public function getDishesByDietGroupedByMeal(int $dietId): array
     {
-        $mealTypes = ['desayuno', 'media-mañana', 'comida', 'merienda', 'cena'];
+        $mealTypes = ['desayuno', 'media-manana', 'almuerzo', 'merienda', 'cena'];
         $grouped   = array_fill_keys($mealTypes, []);
 
         foreach ($this->repository->findByDiet($dietId) as $dm) {

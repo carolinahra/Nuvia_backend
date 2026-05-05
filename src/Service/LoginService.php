@@ -24,11 +24,12 @@ class LoginService
         return [
             'token' => $session->getToken(),
             'user'  => [
-                'id'       => $user->getId(),
-                'name'     => $user->getName(),
-                'username' => $user->getUsername(),
-                'email'    => $user->getEmail(),
-                'isAdmin'  => $user->isAdmin(),
+                'id'            => $user->getId(),
+                'name'          => $user->getName(),
+                'username'      => $user->getUsername(),
+                'email'         => $user->getEmail(),
+                'isAdmin'       => $user->isAdmin(),
+                'defaultDietId' => $user->getDefaultDiet()?->getId(),
             ],
         ];
     }

@@ -21,6 +21,11 @@ class UserMealLogService
         return $this->repository->findAll();
     }
 
+    public function findByUser(int $userId, ?\DateTimeInterface $from = null, ?\DateTimeInterface $to = null): array
+    {
+        return $this->repository->findByUser($userId, $from, $to);
+    }
+
     public function create(array $data): UserMealLog
     {
         $userMealLog = new UserMealLog();

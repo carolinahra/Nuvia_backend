@@ -36,4 +36,22 @@ class UserMealLogRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByUser(int $userId, ?\DateTimeInterface $from = null, ?\DateTimeInterface $to = null): array
+    {
+        $qb = $this->createQueryBuilder('uml')
+            ->andWhere('uml.user = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('uml.createdAt', 'DESC');
+
+        if ($from !== null) {
+            $qb->andWhere('uml.createdAt >= :from')->setParameter('from', $from);
+        }
+
+        if ($to !== null) {
+            $qb->andWhere('uml.createdAt <= :to')->setParameter('to', $to);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

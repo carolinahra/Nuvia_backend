@@ -50,7 +50,7 @@ class UserMealLogService
         $userMealLog->setDish($data['user_meal_log_dish']);
 
         $userMealLog->setCreatedAt(
-            $data['user_meal_log_created_at'] ?? new \DateTimeImmutable()
+            $data['user_meal_log_created_at'] ?? new \DateTime()
         );
 
         $this->repository->save($userMealLog, true);

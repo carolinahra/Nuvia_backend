@@ -22,7 +22,7 @@ class DietMeal
     #[ORM\JoinColumn(name: 'dish_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Dish $dish;
 
-    /** desayuno | media-mañana | comida | cena */
+    /** desayuno | media-manana | almuerzo | merienda | cena */
     #[ORM\Column(type: 'string', length: 255)]
     private string $mealType;
 

@@ -40,9 +40,9 @@ class UserWeightLogController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $log = $this->weightLogService->create([
-                'user_weight_log_user'      => $user,
-                'user_weight_log_weight_kg' => $data['weightKg'] ?? null,
+           $log = $this->weightLogService->create([
+                'user'     => $user,
+                'weightKg' => $data['weightKg'] ?? null,
             ]);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);

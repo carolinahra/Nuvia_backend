@@ -24,12 +24,18 @@ class LoginService
         return [
             'token' => $session->getToken(),
             'user'  => [
-                'id'            => $user->getId(),
-                'name'          => $user->getName(),
-                'username'      => $user->getUsername(),
-                'email'         => $user->getEmail(),
-                'isAdmin'       => $user->isAdmin(),
-                'defaultDietId' => $user->getDefaultDiet()?->getId(),
+                'id'               => $user->getId(),
+                'name'             => $user->getName(),
+                'username'         => $user->getUsername(),
+                'email'            => $user->getEmail(),
+                'heightCm'         => $user->getHeightCm(),
+                'birthdate'        => $user->getBirthdate()?->format('Y-m-d'),
+                'sex'              => $user->getSex(),
+                'activityLevel'    => $user->getActivityLevel(),
+                'goal'             => $user->getGoal(),
+                'isAdmin'          => $user->isAdmin(),
+                'defaultDietId'    => $user->getDefaultDiet()?->getId(),
+                'defaultRoutineId' => $user->getDefaultRoutine()?->getId(),
             ],
         ];
     }

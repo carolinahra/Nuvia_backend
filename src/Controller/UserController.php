@@ -53,4 +53,44 @@ class UserController extends AbstractController
             return $this->json(['error' => 'Email or username already in use'], 409);
         }
     }
+
+    #[Route('/users', name: 'user_update', methods: ['PUT'])]
+    public function update(Request $request): JsonResponse
+    {
+        /** @var \App\Entity\User $user */
+        $user = $request->attributes->get('user');
+        $data = json_decode($request->getContent(), true);
+
+        try {
+            $this->userService->update($user, $data);
+
+            // Si cambió el goal, reasignar dieta
+            if (isset($data['goal'])) {
+                $dietName = self::GOAL_DIET_MAP[$data['goal']] ?? null;
+                if ($dietName !== null) {
+                    $diet = $this->dietService->findOneByName($dietName);
+                    if ($diet !== null) {
+                        $this->userService->setDefaultDiet($user, $diet);
+                    }
+                }
+            }
+
+         return $this->json([
+                'id'               => $user->getId(),
+                'name'             => $user->getName(),
+                'username'         => $user->getUsername(),
+                'email'            => $user->getEmail(),
+                'heightCm'         => $user->getHeightCm(),
+                'birthdate'        => $user->getBirthdate()?->format('Y-m-d'),
+                'sex'              => $user->getSex(),
+                'activityLevel'    => $user->getActivityLevel(),
+                'goal'             => $user->getGoal(),
+                'isAdmin'          => $user->isAdmin(),
+                'defaultDietId'    => $user->getDefaultDiet()?->getId(),
+                'defaultRoutineId' => $user->getDefaultRoutine()?->getId(),
+            ]);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
+    }
 }

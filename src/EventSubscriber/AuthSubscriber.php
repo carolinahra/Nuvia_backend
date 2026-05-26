@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class AuthSubscriber implements EventSubscriberInterface
 {
-    private const PUBLIC_ROUTES = ['login', 'register', 'procesar_contacto'];
+    private const PUBLIC_ROUTES = ['login', 'register', 'procesar_contacto', 'password_forgot', 'password_reset'];
 
     public function __construct(
         private readonly SessionService $sessionService,

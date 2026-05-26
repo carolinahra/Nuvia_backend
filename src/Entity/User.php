@@ -47,6 +47,12 @@ class User
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isAdmin = false;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $resetTokenExpiresAt = null;
+
     #[ORM\ManyToOne(targetEntity: Diet::class, inversedBy: 'users')]
     #[ORM\JoinColumn(name: 'default_diet_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Diet $defaultDiet = null;
@@ -110,6 +116,12 @@ class User
 
     public function isAdmin(): bool { return $this->isAdmin; }
     public function setIsAdmin(bool $isAdmin): static { $this->isAdmin = $isAdmin; return $this; }
+
+    public function getResetToken(): ?string { return $this->resetToken; }
+    public function setResetToken(?string $resetToken): static { $this->resetToken = $resetToken; return $this; }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeInterface { return $this->resetTokenExpiresAt; }
+    public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): static { $this->resetTokenExpiresAt = $resetTokenExpiresAt; return $this; }
 
     public function getDefaultDiet(): ?Diet { return $this->defaultDiet; }
     public function setDefaultDiet(?Diet $defaultDiet): static { $this->defaultDiet = $defaultDiet; return $this; }

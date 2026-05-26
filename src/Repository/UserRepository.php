@@ -68,4 +68,13 @@ class UserRepository extends ServiceEntityRepository
             ->setFirstResult($offset ?? 0)
             ->getResult();
     }
+
+    public function findByResetToken(string $hashedToken): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.resetToken = :token')
+            ->setParameter('token', $hashedToken)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

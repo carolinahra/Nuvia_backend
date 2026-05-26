@@ -1,3 +1,5 @@
 services:
     App\Service\EmailService:
         public: true
+    App\Service\PasswordResetService:
+        public: true

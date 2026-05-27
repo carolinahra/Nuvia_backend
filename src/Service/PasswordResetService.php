@@ -32,7 +32,7 @@ class PasswordResetService
             from: 'customer.support.nuvia@gmail.com',
             to: $user->getEmail(),
             subject: 'Recuperación de contraseña — Nuvia',
-            message: "Hola {$user->getName()},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña (válido 15 minutos):\n\n{$this->frontendUrl}/reset-password?token={$rawToken}\n\nSi no solicitaste esto, ignora este correo.",
+            message: "Hola {$user->getName()},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña (válido 15 minutos):\n\n{$this->frontendUrl}/templates/recuperar-contrasena.html?token={$rawToken}\n\nSi no solicitaste esto, ignora este correo.",
         );
     }
 

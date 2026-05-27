@@ -4,7 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Exception\Auth\InvalidResetTokenException;
 use App\Service\PasswordResetService;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PasswordResetControllerTest extends WebTestCase
@@ -106,9 +106,9 @@ class PasswordResetControllerTest extends WebTestCase
         $this->assertArrayHasKey('message', $data);
     }
 
-    private function mockPasswordResetService(): MockObject&PasswordResetService
+    private function mockPasswordResetService(): Stub&PasswordResetService
     {
-        $stub = $this->createMock(PasswordResetService::class);
+        $stub = $this->createStub(PasswordResetService::class);
         static::getContainer()->set(PasswordResetService::class, $stub);
         return $stub;
     }

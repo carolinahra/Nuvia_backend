@@ -55,7 +55,7 @@ class ContactoControllerTest extends WebTestCase
         $this->mockEmailService();
 
         $client->request('POST', '/contacto', [], [], ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['nombre' => 'Ana', 'email' => 'user@example.com', 'mensaje' => 'Hola, necesito ayuda.'])
+            json_encode(['name' => 'Ana', 'email' => 'user@example.com', 'subject' => 'Ayuda', 'message' => 'Hola, necesito ayuda.'])
         );
 
         $this->assertResponseIsSuccessful();

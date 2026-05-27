@@ -10,6 +10,7 @@ class PasswordResetService
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly EmailService   $emailService,
+        private readonly string         $frontendUrl,
     ) {}
 
     public function requestReset(string $email): void
@@ -31,7 +32,7 @@ class PasswordResetService
             from: 'customer.support.nuvia@gmail.com',
             to: $user->getEmail(),
             subject: 'Recuperación de contraseña — Nuvia',
-            message: "Hola {$user->getName()},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña (válido 15 minutos):\n\nhttps://nuvia-frontend-8ys1.vercel.app/reset-password?token={$rawToken}\n\nSi no solicitaste esto, ignora este correo.",
+            message: "Hola {$user->getName()},\n\nHaz clic en el siguiente enlace para restablecer tu contraseña (válido 15 minutos):\n\n{$this->frontendUrl}/reset-password?token={$rawToken}\n\nSi no solicitaste esto, ignora este correo.",
         );
     }
 

@@ -7,12 +7,14 @@ use App\Exception\Auth\InvalidResetTokenException;
 use App\Repository\UserRepository;
 use App\Service\EmailService;
 use App\Service\PasswordResetService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PasswordResetServiceTest extends TestCase
 {
-    private UserRepository $repo;
-    private EmailService $emailService;
+    private UserRepository&MockObject $repo;
+    private EmailService&MockObject $emailService;
     private PasswordResetService $service;
 
     protected function setUp(): void
@@ -50,6 +52,7 @@ class PasswordResetServiceTest extends TestCase
         $this->assertGreaterThan(new \DateTime(), $user->getResetTokenExpiresAt());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testResetPasswordThrowsForUnknownToken(): void
     {
         $this->repo->method('findByResetToken')->willReturn(null);
@@ -58,6 +61,7 @@ class PasswordResetServiceTest extends TestCase
         $this->service->resetPassword('badtoken', 'newpassword123');
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testResetPasswordThrowsForExpiredToken(): void
     {
         $user = new User();
@@ -74,6 +78,7 @@ class PasswordResetServiceTest extends TestCase
         $this->service->resetPassword('sometoken', 'newpassword123');
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testResetPasswordUpdatesPasswordAndClearsToken(): void
     {
         $user = new User();
@@ -96,6 +101,7 @@ class PasswordResetServiceTest extends TestCase
         $this->assertNull($user->getResetTokenExpiresAt());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testResetPasswordThrowsForShortPassword(): void
     {
         $user = new User();

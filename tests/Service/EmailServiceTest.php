@@ -15,7 +15,8 @@ class EmailServiceTest extends TestCase
         $mailer->expects($this->once())
             ->method('send')
             ->with($this->callback(function (Email $email) {
-                return $email->getFrom()[0]->getAddress() === 'sender@example.com'
+                return $email->getFrom()[0]->getAddress() === 'customer.support.nuvia@gmail.com'
+                    && $email->getReplyTo()[0]->getAddress() === 'sender@example.com'
                     && $email->getTo()[0]->getAddress() === 'recipient@example.com'
                     && $email->getSubject() === 'Test Subject'
                     && $email->getTextBody() === 'Test message body';

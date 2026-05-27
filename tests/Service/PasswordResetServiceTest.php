@@ -21,7 +21,7 @@ class PasswordResetServiceTest extends TestCase
     {
         $this->repo         = $this->createMock(UserRepository::class);
         $this->emailService = $this->createMock(EmailService::class);
-        $this->service      = new PasswordResetService($this->repo, $this->emailService);
+        $this->service      = new PasswordResetService($this->repo, $this->emailService, 'http://localhost:5173');
     }
 
     public function testRequestResetDoesNothingWhenEmailNotFound(): void
